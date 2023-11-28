@@ -10,11 +10,11 @@ export declare class Visual implements IVisual {
     private formattingSettingsService;
     private reactRoot;
     host: powerbi.extensibility.visual.IVisualHost;
-    storage: powerbi.extensibility.ILocalVisualStorageService;
     updateOptions: VisualUpdateOptions;
     getUpdateOptions(): VisualUpdateOptions;
     saveDates(dateIds: number[], startAndEndUnixTime: string): void;
     onDatesChange(dateIds: number[], startAndEndUnixTime: string): void;
+    onRemoveFilter(): void;
     constructor(options: VisualConstructorOptions);
     update(options: VisualUpdateOptions): void;
     /**

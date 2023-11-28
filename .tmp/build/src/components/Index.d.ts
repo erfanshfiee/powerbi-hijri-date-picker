@@ -6,4 +6,5 @@ export default Index;
 interface Props {
     onDatesChange(dateIds: number[], startAndEndUnixTime: string): void;
     getUpdateOptions(): VisualUpdateOptions;
+    onRemoveFilter(): void;
 }

@@ -18,7 +18,6 @@ export class Visual implements IVisual {
   private formattingSettingsService: FormattingSettingsService;
   private reactRoot: React.JSX.Element;
   host: powerbi.extensibility.visual.IVisualHost;
-  storage: powerbi.extensibility.ILocalVisualStorageService;
   updateOptions: VisualUpdateOptions;
 
   getUpdateOptions() {
@@ -61,13 +60,33 @@ export class Visual implements IVisual {
     this.saveDates(dateIds, startAndEndUnixTime);
   }
 
+  onRemoveFilter() {
+    this.host.applyJsonFilter(
+      null,
+      "general",
+      "filter",
+      powerbi.FilterAction.merge
+    );
+    const instance: VisualObjectInstance = {
+      objectName: "selectedDates",
+      selector: undefined,
+      properties: {
+        selectedDates: "",
+        startAndEndUnixTime: "",
+      },
+    };
+    this.host.persistProperties({
+      merge: [instance],
+    });
+  }
+
   constructor(options: VisualConstructorOptions) {
     this.target = options.element;
     this.host = options.host;
-    this.storage = options.host.storageService;
     this.reactRoot = React.createElement(Index, {
       onDatesChange: this.onDatesChange.bind(this),
       getUpdateOptions: this.getUpdateOptions.bind(this),
+      onRemoveFilter: this.onRemoveFilter.bind(this),
     });
 
     ReactDOM.render(this.reactRoot, this.target);
@@ -75,7 +94,6 @@ export class Visual implements IVisual {
 
   public update(options: VisualUpdateOptions) {
     this.updateOptions = options;
-    console.log(options);
   }
 
   /**

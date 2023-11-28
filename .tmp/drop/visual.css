@@ -19,4 +19,19 @@ p em {
 .calendar {
   margin: 5px;
 }
+.primary {
+  background-color: #0074d9;
+  border: 1px solid white;
+  color: white;
+  border-radius: 5px;
+  padding: 5px;
+  font-size: 16px;
+  font-family: sans-serif;
+}
+.rmdp-wrapper {
+  display: flex;
+  flex-direction: column;
+}
 
+
+/*# sourceMappingURL=https://localhost:8080/assets/visual.css.map*/

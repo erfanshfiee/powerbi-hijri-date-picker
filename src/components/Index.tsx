@@ -4,7 +4,6 @@ import { Calendar, DateObject } from "react-multi-date-picker";
 import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
 import VisualUpdateOptions = powerbi.extensibility.visual.VisualUpdateOptions;
-
 import "./styles";
 function Index(props: Props) {
   const [toDate, setToDate] = useState<any>();
@@ -19,7 +18,7 @@ function Index(props: Props) {
     const dates = selectedDates?.selectedDates as string;
     const startAndEndUnixTime = selectedDates?.startAndEndUnixTime as string;
 
-    if (!selectedDates) return;
+    if (!selectedDates || !startAndEndUnixTime || !dates) return;
 
     const [startDate, endDate] = dates.split("_");
     const [startUnixTime, endDateUnix] = startAndEndUnixTime.split("_");
@@ -153,9 +152,14 @@ function Index(props: Props) {
     props.onDatesChange(dateIds, fromUnixTime + "_" + toUnixTime);
   };
 
+  const removeFilter = () => {
+    setToDate([]);
+    props.onRemoveFilter();
+  };
+
   return (
     <div className="wrapper">
-      <div className="to calendar">
+      <div className="calendar">
         <Calendar
           range
           onChange={handleTomDateChange}
@@ -163,7 +167,16 @@ function Index(props: Props) {
           calendar={persian}
           locale={persian_fa}
           highlightToday={false}
-        />
+        >
+          {/* <button className="primary" onClick={removeFilter}>
+            حذف فیلتر
+          </button> */}
+          <img
+            style={{ height: "20px", width: "20px", margin: "5px" }}
+            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAADsAAAA7AF5KHG9AAAAGXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAAVFJREFUWIXF171Kw1AYh/Ff/cJqxwouinoBXqYOrlZdBHHSW/BjcNVFK+iiIKiog6M41qENxNC0yckJ/cM7hJyT58mbnHBCvLTQwSdesYW5iNcfmTZu0cvUGZp1w5dwNwSe1BUWJwWvVaIovBaJsvCoEqHwtERrUvBKEu1I8KTOMTtdAn6JzbLWI7JRdGCstg+rl3Hw2G3P1sck4T3s5sGzbf+tAd6VsxKy8FOs4yki/AHLefBuBj4zOLcSSaIw/CQFT1JVohK8qkQuvOX/Mz/GuA/UKp5LwLuDmxyaTkl4WYmRcPgaDDwvAS8qMRYO74PB18L2b3kSheCwnZoUuolcw08IHOb12x8qMYXDUHiSZqBEA/upeY9yllodEg0cxIKXlagFXlSiVvg4iSkc1Q1PsoCLFOxGf1+YHN8LeNurSlRaaqGZxw7e8I09FX4ssvkDrMyLTJqNMMMAAAAASUVORK5CYII="
+            onClick={removeFilter}
+          />
+        </Calendar>
       </div>
     </div>
   );
@@ -173,6 +186,7 @@ export default Index;
 interface Props {
   onDatesChange(dateIds: number[], startAndEndUnixTime: string): void;
   getUpdateOptions(): VisualUpdateOptions;
+  onRemoveFilter(): void;
 }
 interface HijriDate {
   year: number;
